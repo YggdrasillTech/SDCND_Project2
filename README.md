@@ -25,6 +25,9 @@ The goals / steps of this project are the following:
 [image7]: ./examples/normalized.png "Normalized Images Examples"
 [image8]: ./examples/loss_history.png "Loss History Graph"
 [image9]: ./examples/accuracy_history.png "Accuracy History Graph"
+[image10]: ./examples/web_images.png "Web Images"
+[image11]: ./examples/softmax_probabilities.png "Softmax Probabilities"
+[image12]: ./examples/feature_maps.png "Feature Maps"
 
 ---
 ### Data Set Summary & Exploration
@@ -90,7 +93,7 @@ My final model consisted of the following layers:
 | Convolution 5x5     	| 1x1 stride, valid padding, outputs 10x10x32 	|
 | RELU					        |												                        |
 | Dropout               | Training Dropout Probability of 0.3           |
-| Max pooling	      	  | 2x2 stride,  outputs 5x15x32 				          |
+| Max pooling	      	  | 2x2 stride,  outputs 5x5x32 				          |
 | Flatten       	      | outputs 800                 									|
 | Fully connected		    | inputs 800, outputs 200      									|
 | Fully connected		    | inputs 200, outputs 100      									|
@@ -126,17 +129,9 @@ My final model results were:
 * validation set accuracy of **0.930**
 * test set accuracy of **0.906**
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+The architecture chosen was the LeNet, because is a simple architecture that works pretty well. Even though some of the problems were that it underfits easily, so in under to get LeNet perform better some of the changes are a higher depth in the convolution filters, more hidden units in the fully connected layers, the use of dropout and L2 Regularization.
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+The parameters that were tuned the most are Learning Rate, Dropout and L2 Regularization. L2 Regularization was kind of funny, since it takes into account the weights magnitude a higher value would probably give to much importance to low values and underfit the model. A lower value would not harm the performance and still get the effect of L2 Regularization.
 
 ---
 ### Test a Model on New Images
@@ -145,42 +140,35 @@ If a well known architecture was chosen:
 
 Here are five German traffic signs that I found on the web:
 
+![alt text][image10]
 
-
-The first image might be difficult to classify because ...
+I decided to use these images because of the variety in their shape. All images are different in shape and in the case of the speed limit also give me the opportunity of check against other similar speed limit signs.
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 Here are the results of the prediction:
 
-| Image			        |     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| Stop Sign      		| Stop sign   									|
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Image			                            |     Prediction	        			            		|
+|:-------------------------------------:|:---------------------------------------------:|
+| No Vehicles        		                | No Vehicles    						                		|
+| Right-of-way at the next intersection | Right-of-way at the next intersection    			|
+| Priority Road			        		        | Priority Road				                     			|
+| 70 km/h	        		                  | 20 km/h	  					                  				|
+| Stop		    	                        | Stop                            							|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. It got wrong guessing the speed limit, this could be due to the similarities between all speed limits signs and some inclination towards a specific one.
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+Here is the softmax probabilities for all 5 images:
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| .60         			| Stop sign   									|
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
-
-
-For the second image ...
+![alt text][image11]
 
 ---
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+
+For feature visualization I tried to replicate the work made by NVIDIA in its [white paper](https://arxiv.org/pdf/1704.07911.pdf). The process is pretty simple, I take each layer of feature maps and average them into a single feature map. Then the average map is scale to the original image size. The average and scaling is repeated over all layers. At the end a element wise multiplication between all layers is perform to obtain a visualization of which part of the image contribute more to the network guess. Here my visualization for all 5 web images:
+
+![alt text][image12]
