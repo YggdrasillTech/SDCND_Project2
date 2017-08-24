@@ -144,6 +144,14 @@ Here are five German traffic signs that I found on the web:
 
 I decided to use these images because of the variety in their shape. All images are different in shape and in the case of the speed limit also give me the opportunity of check against other similar speed limit signs.
 
+Images were resize at 32x32 pixel, this cause some artifacts in the images due to this process. The most clear example is image 4 in which it is possible to see noise specially in the part of the sky. This noise affects all images (even if it is not visible) and could create a potencial misclasification.
+
+Also the Stop sign at least the letters have also noise, so is expected that all signs that contain simbols and/or letters are hard to classifie due to artifacts in compression and resize.
+
+The edges and other geometric features seems to be retain pretty well. Even though images are pixelated edges are still pretty sharp and detectable, So I expect than simple shapes are going to be easilly clasified.
+
+Since my architecture doesn't take into account color, only changes in brightness could be difficult to manage (to low light or areas with different level of ligth). In web images this type of features are not present but is worth mention this posibility.
+
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 Here are the results of the prediction:
@@ -158,6 +166,11 @@ Here are the results of the prediction:
 
 
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. It got wrong guessing the speed limit, this could be due to the similarities between all speed limits signs and some inclination towards a specific one.
+
+Comparing Test Accuracy (**0.906**) against the web images Accuracy (**0.800**) is clearly a difference of **~0.1**. This is not so high if it's take into account that only 5 images were evaluated for the web test. In k_prob later on, is posible to see that for image 4 which is the one misclassified, all the probabilities were around speed signs (image 4 is 70km/h sign). So this misclasification could posible be part of the artifacts discused in the point above. A later experiment with some noise reducing technique could reveal if this is due to noise.
+
+Taking into account that image 4 correct class is still among the Top-5 probabilities is still consistent with Validation and Tes Accuracy in the traning phase.
+
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
